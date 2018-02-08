@@ -6,7 +6,20 @@ using System.Threading.Tasks;
 
 namespace Capstone.Classes
 {
-    class Change
+    public class Change
     {
+        public int Nickels { get; }
+
+        public int Dimes { get; }
+
+        public int Quarters { get; }
+
+        public decimal Total { get; }
+
+
+        public Change(decimal total)
+        {
+            this.Total = total;
+        }
     }
 }
