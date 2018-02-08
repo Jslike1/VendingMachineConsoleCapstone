@@ -17,9 +17,7 @@ namespace Capstone.Classes.Vending_Machine_Items
             this.Price = price;
         }
 
-        public virtual string Consume()
-        {
-            return "";
-        }
+        public abstract string Consume();
+
     }
 }

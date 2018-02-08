@@ -11,5 +11,10 @@ namespace Capstone.Classes.Vending_Machine_Items
         public GumItem(string item, decimal price) : base(item, price)
         {
         }
+
+        public override string Consume()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
