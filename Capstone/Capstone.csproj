@@ -43,15 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Change.cs" />
+    <Compile Include="Classes\FileReader.cs" />
+    <Compile Include="Classes\MainMenu.cs" />
+    <Compile Include="Classes\TransactionLogger.cs" />
+    <Compile Include="Classes\Vending Machine Items\BeverageItem.cs" />
+    <Compile Include="Classes\Vending Machine Items\CandyItem.cs" />
+    <Compile Include="Classes\Vending Machine Items\ChipItem.cs" />
+    <Compile Include="Classes\Vending Machine Items\GumItem.cs" />
+    <Compile Include="Classes\Vending Machine Items\VendingMachineItem.cs" />
+    <Compile Include="Classes\VendingMachine.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="vendingmachine.csv" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Classes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
