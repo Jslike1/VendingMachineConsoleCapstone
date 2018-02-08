@@ -14,7 +14,7 @@ namespace Capstone.Classes.Vending_Machine_Items
 
         public override string Consume()
         {
-            throw new NotImplementedException();
+            return "Munch Munch, Yum!";
         }
     }
 }

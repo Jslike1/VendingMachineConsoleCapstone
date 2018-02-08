@@ -24,7 +24,8 @@ namespace Capstone.Classes
             string key;
             string itemName;
             decimal price;
-            
+
+           
 
             try
             {
@@ -32,6 +33,8 @@ namespace Capstone.Classes
                 {
                     while (!sr.EndOfStream)
                     {
+
+                        List<VendingMachineItem> slotContents = new List<VendingMachineItem>();
 
                         line = sr.ReadLine();
                         List<string> itemInfo = new List<string>(line.Split('|'));
@@ -41,32 +44,45 @@ namespace Capstone.Classes
 
                         if (key[0] == 'A')
                         {
-                            result.Add(key, new ChipItem(itemName, price));
+                            for (int i = 0; i < 5; i++)
+                            {
+                            slotContents.Add(new ChipItem(itemName, price));
+
+                            }
                         }
                         else if (key[0] == 'B')
                         {
-                            result.Add(key, new CandyItem(itemName, price));
+                            for (int i = 0; i < 5; i++)
+                            {
+                            slotContents.Add(new CandyItem(itemName, price));
+
+                            }
                         }
                         else if (key[0] == 'C')
                         {
-                            result.Add(key, new BeverageItem(itemName, price));
+                            for (int i = 0; i < 5; i++)
+                            {
+                            slotContents.Add(new BeverageItem(itemName, price));
+
+                            }
                         }
                         else
                         {
-                            result.Add(key, new GumItem(itemName, price));
+                            for (int i = 0; i < 5; i++)
+                            {
+                            slotContents.Add(new GumItem(itemName, price));
+                            }
                         }
 
-
-
-
+                        result.Add(key, slotContents);
 
 
                     }
                 }
             }
-            catch
+            catch (IOException ex)
             {
-
+                Console.WriteLine(ex.Message);
             }
 
 
