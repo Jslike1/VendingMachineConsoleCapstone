@@ -43,6 +43,24 @@ namespace Capstone.Classes
             return Inventory[slot].Count;
         }
 
+        public VendingMachineItem Purchase(string slot)
+        {
+            VendingMachineItem returnItem;
+            
+            returnItem = Inventory[slot][0];
+            Inventory[slot].RemoveAt(0);
+            return returnItem;
+            
+
+        }
+
+        private Change ReturnChange()
+        {
+            Change change = new Change(Balance);
+            return change;
+            
+        }
+
         public VendingMachine(Dictionary<string, List<VendingMachineItem>> startingInventory)
         {
             foreach(string key in startingInventory.Keys)

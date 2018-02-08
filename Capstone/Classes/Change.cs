@@ -19,7 +19,23 @@ namespace Capstone.Classes
 
         public Change(decimal total)
         {
-            this.Total = total;
+
+            int workingTotal = (int)total * 100;
+
+            Nickels = workingTotal / 25;
+
+            workingTotal = workingTotal - (Nickels * 25);
+
+            Dimes = workingTotal / 10;
+
+            workingTotal = workingTotal - (Dimes * 10);
+
+            Nickels = workingTotal / 5;
+
+            workingTotal = workingTotal - (Nickels * 5);
+
+            Total = workingTotal;
+
         }
     }
 }
