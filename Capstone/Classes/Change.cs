@@ -22,7 +22,7 @@ namespace Capstone.Classes
 
             int workingTotal = (int)total * 100;
 
-            Nickels = workingTotal / 25;
+            Quarters = workingTotal / 25;
 
             workingTotal = workingTotal - (Nickels * 25);
 
@@ -34,7 +34,7 @@ namespace Capstone.Classes
 
             workingTotal = workingTotal - (Nickels * 5);
 
-            Total = workingTotal;
+            Total = workingTotal * 0.01m;
 
         }
     }

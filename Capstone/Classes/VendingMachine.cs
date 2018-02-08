@@ -7,8 +7,11 @@ using Capstone.Classes.Vending_Machine_Items;
 
 namespace Capstone.Classes
 {
+
     public class VendingMachine
     {
+        public FileReader fileReader = new FileReader("vendingmachine.csv"); 
+
         public Dictionary<string, List<VendingMachineItem>> Inventory { get; set; }
 
         public decimal Balance { get; private set; }
@@ -17,8 +20,13 @@ namespace Capstone.Classes
         {
             get
             {
-                string[] slots = new string[0];
-
+                string[] slots = new string[Inventory.Count];
+                int counter = 0;
+                foreach(string key in Inventory.Keys)
+                {
+                    slots[counter] = key;
+                    counter++;
+                }
                 return slots;
 
             }
@@ -27,7 +35,7 @@ namespace Capstone.Classes
 
         public void FeedMoney(int dollars)
         {
-            Balance += dollars;
+            Balance += (decimal)dollars;
         }
 
         public VendingMachineItem GetItemAtSlot(string slot)
@@ -61,12 +69,15 @@ namespace Capstone.Classes
             
         }
 
-        public VendingMachine(Dictionary<string, List<VendingMachineItem>> startingInventory)
+        public VendingMachine()
         {
-            foreach(string key in startingInventory.Keys)
-            {
-                Inventory[key] = startingInventory[key];
-            }
+            //Dictionary<string, List<VendingMachineItem>> startingInventory
+            //foreach(string key in startingInventory.Keys)
+            //{
+            //    Inventory[key] = startingInventory[key];
+            //}
+            this.Inventory = fileReader.GetInventory();
+
         }
 
     }

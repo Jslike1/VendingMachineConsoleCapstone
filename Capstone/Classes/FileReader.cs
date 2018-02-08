@@ -8,11 +8,11 @@ using System.IO;
 
 namespace Capstone.Classes
 {
-    class FileReader
+    public class FileReader
     {
         private string FilePath;
 
-        FileReader(string filePath)
+        public FileReader(string filePath)
         {
             this.FilePath = filePath;
         }

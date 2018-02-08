@@ -20,9 +20,10 @@ namespace Capstone.Classes
         {
             try
             {
-                using (StreamWriter sr = new StreamWriter("Log.txt", true))
+                using (StreamWriter sr = new StreamWriter(FilePath, true))
                 {
-                    sr.WriteLine($"{DateTime.Today} {DateTime.Now} FEED MONEY: ${amount}    ${finalBalance}");
+                    string feedMoney = "FEED MONEY:";
+                    sr.WriteLine($"{DateTime.Now} {feedMoney.PadRight(22)}{amount.ToString("C").PadRight(10)}{finalBalance.ToString("C").PadRight(10)}");
                 }
             }
             catch (Exception ex)
@@ -35,9 +36,10 @@ namespace Capstone.Classes
         {
             try
             {
-                using (StreamWriter sr = new StreamWriter("Log.txt", true))
+                using (StreamWriter sr = new StreamWriter(FilePath, true))
                 {
-                    sr.WriteLine($"{DateTime.Today} {DateTime.Now} {product} {slot} ${amount}    ${finalBalance}");
+                    string itemNameAndSlot = $"{product} {slot}";
+                sr.WriteLine($"{DateTime.Now} {itemNameAndSlot.PadRight(22)}{amount.ToString("C").PadRight(10)}{finalBalance.ToString("C").PadRight(10)}");
                 }
             }
             catch (Exception ex)
@@ -50,9 +52,11 @@ namespace Capstone.Classes
         {
             try
             {
-                using (StreamWriter sr = new StreamWriter("Log.txt", true))
+                using (StreamWriter sr = new StreamWriter(FilePath, true))
                 {
-                    sr.WriteLine($"{DateTime.Today} {DateTime.Now} GIVECHANGE ${finalBalance}    $0.00");
+                    string giveChange = "GIVECHANGE";
+                    string zeros = "$0.00";
+                    sr.WriteLine($"{DateTime.Now} {giveChange.PadRight(22)}{finalBalance.ToString("C").PadRight(10)}{zeros.PadRight(10)}");
                 }
             }
             catch (Exception ex)

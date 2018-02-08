@@ -10,7 +10,7 @@ namespace Capstone.Classes
     {
 
         static VendingMachine vendingMachine = new VendingMachine();
-
+        static TransactionLogger transactionLogger = new TransactionLogger("log.txt");
 
         public void DisplayMenu()
         {
@@ -27,12 +27,12 @@ namespace Capstone.Classes
                 {
                     if(number == 1)
                     {
-                        Console.WriteLine("Enter DisplayItems subclass");
+                        
                         DisplayItems(vendingMachine);
-                        break;
+                        
                         
                     }
-                    if(number == 2)
+                    else if(number == 2)
                     {
                         Console.WriteLine("PurchaseItems");
                         PurchaseItem(vendingMachine);
@@ -56,12 +56,63 @@ namespace Capstone.Classes
 
         private void PurchaseItem(VendingMachine vendingMachine)
         {
-            throw new NotImplementedException();
+            while (true)
+            {
+
+                
+                Console.WriteLine();
+                Console.WriteLine("(1) Feed Money");
+                Console.WriteLine();
+                Console.WriteLine("(2) Select Product");
+                Console.WriteLine();
+                Console.WriteLine("(3) Finish Transaction");
+                string userInput = Console.ReadLine();
+                if(Int32.TryParse(userInput, out int number))
+                {
+                    if(number == 1)
+                    {
+                        TakeBill();
+                    }
+                }
+            }
+
+        }
+
+        private void TakeBill()
+        {
+            while (true)
+            {
+                string userInput;
+                Console.Write("What kind of bill will you feed? (1) (2) (5) (10): ");
+                userInput = Console.ReadLine();
+                if ((Int32.TryParse(userInput, out int number)) && (number == 1 || number == 2 || number == 5 || number == 10))
+                {
+                    vendingMachine.FeedMoney(number);
+                    Console.WriteLine("Amount currently in vending machine: " + vendingMachine.Balance.ToString("C"));
+                    Console.WriteLine();
+                    transactionLogger.RecordDeposit(number, vendingMachine.Balance);
+                }
+                else
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("Please enter a valid choice");
+                    Console.WriteLine();
+                }
+                
+            }
+
         }
 
         private void DisplayItems(VendingMachine vendingMachine)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < vendingMachine.Slots.Length; i++)
+            {
+                Console.WriteLine($"{vendingMachine.Slots[i]}:  " +
+                    $"{vendingMachine.Inventory[vendingMachine.Slots[i]][0].ItemName.PadRight(20)}" +
+                    $"{vendingMachine.Inventory[vendingMachine.Slots[i]][0].Price.ToString("C").PadLeft(10)}");
+                
+            }
+            Console.WriteLine();
         }
     }
 
