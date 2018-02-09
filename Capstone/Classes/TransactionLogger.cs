@@ -39,7 +39,7 @@ namespace Capstone.Classes
                 using (StreamWriter sr = new StreamWriter(FilePath, true))
                 {
                     string itemNameAndSlot = $"{product} {slot}";
-                sr.WriteLine($"{DateTime.Now} {itemNameAndSlot.PadRight(22)}{amount.ToString("C").PadRight(10)}{finalBalance.ToString("C").PadRight(10)}");
+                sr.WriteLine($"{DateTime.Now} {itemNameAndSlot.PadRight(22)}{finalBalance.ToString("C").PadRight(10)}{(finalBalance - amount).ToString("C").PadRight(10)}");
                 }
             }
             catch (Exception ex)

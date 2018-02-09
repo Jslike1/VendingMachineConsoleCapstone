@@ -53,6 +53,7 @@
     <Compile Include="Classes\Vending Machine Items\GumItem.cs" />
     <Compile Include="Classes\Vending Machine Items\VendingMachineItem.cs" />
     <Compile Include="Classes\VendingMachine.cs" />
+    <Compile Include="Classes\Exceptions\VendingMachineException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

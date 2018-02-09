@@ -54,11 +54,14 @@ namespace Capstone.Classes
         public VendingMachineItem Purchase(string slot)
         {
             VendingMachineItem returnItem;
-            
-            returnItem = Inventory[slot][0];
-            Inventory[slot].RemoveAt(0);
-            return returnItem;
-            
+
+                Balance -= Inventory[slot][0].Price;
+                returnItem = Inventory[slot][0];
+                Inventory[slot].RemoveAt(0);
+
+                return returnItem;
+                
+           
 
         }
 
