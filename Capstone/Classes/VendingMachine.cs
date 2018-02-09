@@ -39,17 +39,12 @@ namespace Capstone.Classes
             Balance += (decimal)dollars;
         }
 
-        public VendingMachineItem GetItemAtSlot(string slot)
+        public void CheckQuantityRemaining(string slot)
         {
-            
-            VendingMachineItem tempItem = Inventory[slot][0];
-            return tempItem;
-        }
-
-        public int GetQuantityRemaining(string slot)
-        {
-
-            return Inventory[slot].Count;
+            if (!(Inventory[slot].Count > 0))
+            {
+                throw new OutOfStockException();
+            }
         }
 
         public VendingMachineItem Purchase(string slot)
@@ -58,6 +53,7 @@ namespace Capstone.Classes
             {
                 throw new InsufficientFundsException();
             }
+
             VendingMachineItem returnItem;
 
                 Balance -= Inventory[slot][0].Price;

@@ -14,12 +14,10 @@ namespace Capstone.Classes
         static VendingMachine vendingMachine = new VendingMachine();
         static TransactionLogger transactionLogger = new TransactionLogger("log.txt");
         static List<VendingMachineItem> shoppingCart = new List<VendingMachineItem>();
+        public static string validInputPrompt = "Please enter a valid input... ";
 
         public void DisplayMenu()
         {
-
-
-
             while (true)
             {
                 Console.WriteLine("(1) Display Vending Machine Contents");
@@ -44,7 +42,7 @@ namespace Capstone.Classes
                     else
                     {
                         Console.WriteLine();
-                        Console.WriteLine("Please enter a valid input (1 or 2)");
+                        Console.WriteLine($"{validInputPrompt} (1 or 2)");
                         Console.WriteLine();
                         userInput = "";
                     }
@@ -53,7 +51,7 @@ namespace Capstone.Classes
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Please enter a valid input (1 or 2)");
+                    Console.WriteLine($"{validInputPrompt} (1 or 2)");
                     Console.WriteLine();
                 }
             }
@@ -98,7 +96,6 @@ namespace Capstone.Classes
                     }
                 }
             }
-
         }
 
         private void FinishTransaction()
@@ -120,8 +117,6 @@ namespace Capstone.Classes
                 Console.WriteLine();
 
             }
-
-
         }
 
 
@@ -135,62 +130,40 @@ namespace Capstone.Classes
                 userInput = Console.ReadLine().ToUpper();
                 if (userInput == "")
                 {
-                    //PurchaseItem(vendingMachine);
                     break;
                 }
-
                 if (vendingMachine.Inventory.ContainsKey(userInput))
                 {
-                    if (vendingMachine.Inventory[userInput].Count > 0)
+                    try
                     {
-                        //if (vendingMachine.Balance >= vendingMachine.Inventory[userInput][0].Price)
-                        //{
-                        try
-                        {
+                        vendingMachine.CheckQuantityRemaining(userInput);
+                        transactionLogger.RecordPurchase(userInput, vendingMachine.Inventory[userInput][0].ItemName, vendingMachine.Inventory[userInput][0].Price, vendingMachine.Balance);
 
-                            transactionLogger.RecordPurchase(userInput, vendingMachine.Inventory[userInput][0].ItemName, vendingMachine.Inventory[userInput][0].Price, vendingMachine.Balance);
+                        Console.WriteLine();
 
-
-
-                            Console.WriteLine();
-                            shoppingCart.Add(vendingMachine.Purchase(userInput));
-                            Console.WriteLine();
-                            Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
-                            Console.WriteLine();
-                            Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
-                        }
-                        catch (IndexOutOfRangeException ex)
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine("Error: That item is out of stock");
-                            Console.WriteLine(ex.Message);
-                            Console.WriteLine();
-                        }
-                        catch (InsufficientFundsException ex)
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine("You did not feed enough money to purchase that item.");
-                            Console.WriteLine(ex.Message);
-                            Console.WriteLine();
-                        }
-                        //}
-                        //else
-                        //{
-                        //    Console.WriteLine("You did not feed enough money to purchase that item.");
-                        //}
+                        shoppingCart.Add(vendingMachine.Purchase(userInput));
+                        Console.WriteLine();
+                        Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
+                        Console.WriteLine();
+                        Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
                     }
-                    else
+                    catch (OutOfStockException ex)
                     {
                         Console.WriteLine();
-                        Console.WriteLine("That item is out of stock...");
+                        Console.WriteLine("That item it out of stock...");
                         Console.WriteLine();
                     }
-
+                    catch (InsufficientFundsException ex)
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine("You did not feed enough money to purchase that item.");
+                        Console.WriteLine();
+                    }
                 }
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Please enter a valit input...");
+                    Console.WriteLine(validInputPrompt);
                 }
             }
         }
@@ -205,7 +178,6 @@ namespace Capstone.Classes
                 userInput = Console.ReadLine();
                 if (userInput == "")
                 {
-                    //PurchaseItem(vendingMachine);
                     break;
                 }
                 if ((Int32.TryParse(userInput, out int number)) && (number == 1 || number == 2 || number == 5 || number == 10))
@@ -218,7 +190,7 @@ namespace Capstone.Classes
                 else
                 {
                     Console.WriteLine();
-                    Console.WriteLine("Please enter a valid choice");
+                    Console.WriteLine(validInputPrompt);
                     Console.WriteLine();
                 }
 
