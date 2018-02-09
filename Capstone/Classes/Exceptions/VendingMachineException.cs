@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Capstone.Classes
+namespace Capstone.Classes.Exceptions
 {
-    public class VendingMachineException : Exception
+    public abstract class VendingMachineException : Exception
     {
         public VendingMachineException()
         {

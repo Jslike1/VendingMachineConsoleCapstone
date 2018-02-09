@@ -44,6 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Change.cs" />
+    <Compile Include="Classes\Exceptions\InsufficientFundsException.cs" />
+    <Compile Include="Classes\Exceptions\InvalidSlotException.cs" />
+    <Compile Include="Classes\Exceptions\OutOfStockException.cs" />
     <Compile Include="Classes\FileReader.cs" />
     <Compile Include="Classes\MainMenu.cs" />
     <Compile Include="Classes\TransactionLogger.cs" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Capstone.Classes.Vending_Machine_Items;
+using Capstone.Classes.Exceptions;
 
 namespace Capstone.Classes
 {
@@ -19,7 +20,7 @@ namespace Capstone.Classes
 
 
 
-            while(true)
+            while (true)
             {
                 Console.WriteLine("(1) Display Vending Machine Contents");
                 Console.WriteLine();
@@ -28,14 +29,14 @@ namespace Capstone.Classes
                 string userInput = Console.ReadLine();
                 if (Int32.TryParse(userInput, out int number))
                 {
-                    if(number == 1)
+                    if (number == 1)
                     {
-                        
+
                         DisplayItems(vendingMachine);
                         userInput = "";
 
                     }
-                    else if(number == 2)
+                    else if (number == 2)
                     {
                         PurchaseItem(vendingMachine);
                         userInput = "";
@@ -74,15 +75,15 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
                 string userInput = Console.ReadLine();
-                if(Int32.TryParse(userInput, out int number))
+                if (Int32.TryParse(userInput, out int number))
                 {
-                    if(number == 1)
+                    if (number == 1)
                     {
                         TakeBill();
                         userInput = "";
                     }
 
-                    if(number == 2)
+                    if (number == 2)
                     {
                         DisplayItems(vendingMachine);
                         SelectProduct();
@@ -108,7 +109,7 @@ namespace Capstone.Classes
             Console.WriteLine();
             Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
             Console.WriteLine();
-            if(shoppingCart.Count != 0)
+            if (shoppingCart.Count != 0)
             {
                 Console.WriteLine("Time to eat your snacks...");
                 Console.WriteLine();
@@ -142,34 +143,41 @@ namespace Capstone.Classes
                 {
                     if (vendingMachine.Inventory[userInput].Count > 0)
                     {
-                        if (vendingMachine.Balance >= vendingMachine.Inventory[userInput][0].Price)
+                        //if (vendingMachine.Balance >= vendingMachine.Inventory[userInput][0].Price)
+                        //{
+                        try
                         {
-                            try
-                            {
 
-                                transactionLogger.RecordPurchase(userInput, vendingMachine.Inventory[userInput][0].ItemName, vendingMachine.Inventory[userInput][0].Price, vendingMachine.Balance);
+                            transactionLogger.RecordPurchase(userInput, vendingMachine.Inventory[userInput][0].ItemName, vendingMachine.Inventory[userInput][0].Price, vendingMachine.Balance);
 
 
 
-                                Console.WriteLine();
-                                shoppingCart.Add(vendingMachine.Purchase(userInput));
-                                Console.WriteLine();
-                                Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
-                                Console.WriteLine();
-                                Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
-                            }
-                            catch (IndexOutOfRangeException ex)
-                            {
-                                Console.WriteLine();
-                                Console.WriteLine("Error: That item is out of stock");
-                                Console.WriteLine(ex.Message);
-                                Console.WriteLine();
-                            }
+                            Console.WriteLine();
+                            shoppingCart.Add(vendingMachine.Purchase(userInput));
+                            Console.WriteLine();
+                            Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
+                            Console.WriteLine();
+                            Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
                         }
-                        else
+                        catch (IndexOutOfRangeException ex)
                         {
+                            Console.WriteLine();
+                            Console.WriteLine("Error: That item is out of stock");
+                            Console.WriteLine(ex.Message);
+                            Console.WriteLine();
+                        }
+                        catch (InsufficientFundsException ex)
+                        {
+                            Console.WriteLine();
                             Console.WriteLine("You did not feed enough money to purchase that item.");
+                            Console.WriteLine(ex.Message);
+                            Console.WriteLine();
                         }
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine("You did not feed enough money to purchase that item.");
+                        //}
                     }
                     else
                     {
@@ -195,7 +203,7 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 Console.Write("What kind of bill will you feed? ( 1, 2, 5, 10 ) OR Press ENTER to Finish; ");
                 userInput = Console.ReadLine();
-                if(userInput == "")
+                if (userInput == "")
                 {
                     //PurchaseItem(vendingMachine);
                     break;
@@ -223,7 +231,7 @@ namespace Capstone.Classes
             Console.WriteLine();
             Console.WriteLine("Vending Machine Contents:");
             Console.WriteLine();
-            
+
             for (int i = 0; i < vendingMachine.Slots.Length; i++)
             {
                 if (vendingMachine.Inventory[vendingMachine.Slots[i]].Count > 0)

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Capstone.Classes.Vending_Machine_Items;
+using Capstone.Classes.Exceptions;
 
 namespace Capstone.Classes
 {
@@ -53,7 +54,10 @@ namespace Capstone.Classes
 
         public VendingMachineItem Purchase(string slot)
         {
-            
+            if (Balance < Inventory[slot][0].Price)
+            {
+                throw new InsufficientFundsException();
+            }
             VendingMachineItem returnItem;
 
                 Balance -= Inventory[slot][0].Price;
