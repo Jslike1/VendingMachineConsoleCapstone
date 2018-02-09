@@ -110,11 +110,13 @@ namespace Capstone.Classes
             Console.WriteLine();
             if(shoppingCart.Count != 0)
             {
-                Console.WriteLine("Time to eat your snacks!");
+                Console.WriteLine("Time to eat your snacks...");
+                Console.WriteLine();
                 foreach (VendingMachineItem snack in shoppingCart)
                 {
                     Console.WriteLine(snack.Consume());
                 }
+                Console.WriteLine();
 
             }
 
@@ -129,7 +131,7 @@ namespace Capstone.Classes
                 string userInput;
                 Console.WriteLine();
                 Console.Write("Which product do you want to purchase? (Ex: A4, C3...) Or Press ENTER to Finish: ");
-                userInput = Console.ReadLine();
+                userInput = Console.ReadLine().ToUpper();
                 if (userInput == "")
                 {
                     //PurchaseItem(vendingMachine);
@@ -152,12 +154,14 @@ namespace Capstone.Classes
                                 Console.WriteLine();
                                 shoppingCart.Add(vendingMachine.Purchase(userInput));
                                 Console.WriteLine();
+                                Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
+                                Console.WriteLine();
                                 Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
                             }
                             catch (IndexOutOfRangeException ex)
                             {
                                 Console.WriteLine();
-                                Console.WriteLine("That item is out of stock");
+                                Console.WriteLine("Error: That item is out of stock");
                                 Console.WriteLine(ex.Message);
                                 Console.WriteLine();
                             }
@@ -170,7 +174,7 @@ namespace Capstone.Classes
                     else
                     {
                         Console.WriteLine();
-                        Console.WriteLine("That item is out of stock");
+                        Console.WriteLine("That item is out of stock...");
                         Console.WriteLine();
                     }
 
@@ -222,10 +226,16 @@ namespace Capstone.Classes
             
             for (int i = 0; i < vendingMachine.Slots.Length; i++)
             {
-                Console.WriteLine($"{vendingMachine.Slots[i]}:  " +
-                    $"{vendingMachine.Inventory[vendingMachine.Slots[i]][0].ItemName.PadRight(20)}" +
-                    $"{vendingMachine.Inventory[vendingMachine.Slots[i]][0].Price.ToString("C").PadLeft(10)}");
-                
+                if (vendingMachine.Inventory[vendingMachine.Slots[i]].Count > 0)
+                {
+                    Console.WriteLine($"{vendingMachine.Slots[i]}:  " +
+                        $"{vendingMachine.Inventory[vendingMachine.Slots[i]][0].ItemName.PadRight(20)}" +
+                        $"{vendingMachine.Inventory[vendingMachine.Slots[i]][0].Price.ToString("C").PadLeft(10)}");
+                }
+                else
+                {
+                    Console.WriteLine($"{vendingMachine.Slots[i]}:  OUT OF STOCK");
+                }
             }
             Console.WriteLine();
         }

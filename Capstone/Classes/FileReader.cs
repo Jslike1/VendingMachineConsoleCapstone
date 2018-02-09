@@ -83,36 +83,12 @@ namespace Capstone.Classes
             catch (IOException ex)
             {
                 Console.WriteLine(ex.Message);
+                Environment.Exit(0);
             }
 
 
             return result;
         }
 
-        //private void AddVendingMachineItem(string key, string itemName, decimal price)
-        //{
-
-
-
-        //    if (key[0] == 'A')
-        //    {
-        //        result = new ChipItem(itemName, price);
-        //    }
-        //    else if(key[0] == 'B')
-        //    {
-        //        result = new CandyItem(itemName, price);
-        //    }
-        //    else if (key[0] == 'C')
-        //    {
-        //        result = new BeverageItem(itemName, price);
-        //    }
-        //    else
-        //    {
-        //        result = new GumItem(itemName, price);
-        //    }
-
-
-
-        //}
     }
 }
