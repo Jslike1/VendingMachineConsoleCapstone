@@ -201,7 +201,7 @@ namespace Capstone.Classes
                     //Console.WriteLine("Amount currently in vending machine: " + vendingMachine.Balance.ToString("C"));
                     Console.WriteLine();
                     transactionLogger.RecordDeposit(number, vendingMachine.Balance);
-                    Freeze();
+                    
 
                 }
                 else
@@ -209,7 +209,7 @@ namespace Capstone.Classes
                     Console.WriteLine();
                     Console.WriteLine(validInputPrompt);
                     Console.WriteLine();
-
+                    Freeze();
                 }
 
             }
