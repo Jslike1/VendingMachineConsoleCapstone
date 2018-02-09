@@ -24,9 +24,6 @@ namespace Capstone.Classes
             string key;
             string itemName;
             decimal price;
-
-           
-
             try
             {
                 using (StreamReader sr = new StreamReader(FilePath))
@@ -73,10 +70,7 @@ namespace Capstone.Classes
                             slotContents.Add(new GumItem(itemName, price));
                             }
                         }
-
                         result.Add(key, slotContents);
-
-
                     }
                 }
             }
@@ -85,8 +79,6 @@ namespace Capstone.Classes
                 Console.WriteLine(ex.Message);
                 Environment.Exit(0);
             }
-
-
             return result;
         }
 

@@ -54,7 +54,6 @@ namespace Capstone.Classes
                         Console.WriteLine();
                         userInput = "";
                     }
-
                 }
                 else
                 {
@@ -77,7 +76,6 @@ namespace Capstone.Classes
                 Console.WriteLine("(3) Finish Transaction");
                 Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
                 Console.WriteLine();
-
                 string userInput = Console.ReadLine();
                 if (Int32.TryParse(userInput, out int number))
                 {
@@ -85,10 +83,8 @@ namespace Capstone.Classes
                     {
                         TakeBill();
                     }
-
                     if (number == 2)
                     {
-                        //DisplayItems(vendingMachine);
                         SelectProduct();
                     }
                     if (number == 3)
@@ -102,7 +98,6 @@ namespace Capstone.Classes
 
         private void FinishTransaction()
         {
-            string userInput;
             Console.WriteLine();
             Change change = vendingMachine.ReturnChange();
             Console.WriteLine($"Your recieve {change.Quarters} quarters, {change.Dimes} dimes, and {change.Nickels} nickels. ");
@@ -120,10 +115,8 @@ namespace Capstone.Classes
                 }
                 shoppingCart = new List<VendingMachineItem>();
                 Console.WriteLine();
-
             }
             Freeze();
-
         }
 
 
@@ -157,13 +150,13 @@ namespace Capstone.Classes
                         Console.WriteLine();
                         Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
                     }
-                    catch (OutOfStockException ex)
+                    catch (OutOfStockException)
                     {
                         Console.WriteLine();
                         Console.WriteLine("That item it out of stock...");
                         Console.WriteLine();
                     }
-                    catch (InsufficientFundsException ex)
+                    catch (InsufficientFundsException)
                     {
                         Console.WriteLine();
                         Console.WriteLine("You did not feed enough money to purchase that item.");
@@ -198,12 +191,8 @@ namespace Capstone.Classes
                 if ((Int32.TryParse(userInput, out int number)) && (number == 1 || number == 2 || number == 5 || number == 10))
                 {
                     vendingMachine.FeedMoney(number);
-
-                    //Console.WriteLine("Amount currently in vending machine: " + vendingMachine.Balance.ToString("C"));
                     Console.WriteLine();
                     transactionLogger.RecordDeposit(number, vendingMachine.Balance);
-                    
-
                 }
                 else
                 {
@@ -212,14 +201,11 @@ namespace Capstone.Classes
                     Console.WriteLine();
                     Freeze();
                 }
-
             }
-
         }
 
         private void DisplayItems(VendingMachine vendingMachine)
         {
-            string userInput;
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine("Vending Machine Contents:");
@@ -238,7 +224,6 @@ namespace Capstone.Classes
                     Console.WriteLine($"{vendingMachine.Slots[i]}:  OUT OF STOCK");
                 }
             }
-
         }
 
         private void Freeze()
