@@ -116,7 +116,9 @@ namespace Capstone.Classes
                 foreach (VendingMachineItem snack in shoppingCart)
                 {
                     Console.WriteLine(snack.Consume());
+                    
                 }
+                shoppingCart = new List<VendingMachineItem>();
                 Console.WriteLine();
 
             }
