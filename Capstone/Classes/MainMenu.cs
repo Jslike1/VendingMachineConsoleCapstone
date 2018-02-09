@@ -15,15 +15,18 @@ namespace Capstone.Classes
         static TransactionLogger transactionLogger = new TransactionLogger("log.txt");
         static List<VendingMachineItem> shoppingCart = new List<VendingMachineItem>();
         public static string validInputPrompt = "Please enter a valid input... ";
+        public static string balanceMessage = $"Amount currently in vending machine: ";
 
         public void DisplayMenu()
         {
             while (true)
             {
-                
-                Console.WriteLine("(1) Display Vending Machine Contents");
+                Console.Clear();
                 Console.WriteLine();
+                Console.WriteLine("Menu:");
+                Console.WriteLine("(1) Display Vending Machine Contents");
                 Console.WriteLine("(2) Purchase");
+                Console.WriteLine("(3) Leave Vending Machine");
                 Console.WriteLine();
                 string userInput = Console.ReadLine();
                 if (Int32.TryParse(userInput, out int number))
@@ -40,6 +43,10 @@ namespace Capstone.Classes
                     {
                         PurchaseItem(vendingMachine);
                         userInput = "";
+                    }
+                    else if (number == 3)
+                    {
+                        Environment.Exit(0);
                     }
                     else
                     {
@@ -63,17 +70,15 @@ namespace Capstone.Classes
         {
             while (true)
             {
-
+                Console.Clear();
                 Console.WriteLine();
                 Console.WriteLine("Menu:");
-                Console.WriteLine();
                 Console.WriteLine("(1) Feed Money");
-                Console.WriteLine();
                 Console.WriteLine("(2) Select Product");
-                Console.WriteLine();
                 Console.WriteLine("(3) Finish Transaction");
+                Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
                 Console.WriteLine();
-                Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
+
                 string userInput = Console.ReadLine();
                 if (Int32.TryParse(userInput, out int number))
                 {
@@ -102,11 +107,13 @@ namespace Capstone.Classes
 
         private void FinishTransaction()
         {
+            Console.Clear();
+            string userInput;
             Console.WriteLine();
             Change change = vendingMachine.ReturnChange();
             Console.WriteLine($"Your recieve {change.Quarters} quarters, {change.Dimes} dimes, and {change.Nickels} nickels. ");
             Console.WriteLine();
-            Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
+            Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
             Console.WriteLine();
             if (shoppingCart.Count != 0)
             {
@@ -119,6 +126,8 @@ namespace Capstone.Classes
                 Console.WriteLine();
 
             }
+            Freeze();
+
         }
 
 
@@ -147,7 +156,7 @@ namespace Capstone.Classes
                         Console.WriteLine();
                         Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
                         Console.WriteLine();
-                        Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
+                        Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
                     }
                     catch (OutOfStockException ex)
                     {
@@ -174,9 +183,12 @@ namespace Capstone.Classes
         {
             while (true)
             {
+                Console.Clear();
+
                 string userInput;
                 Console.WriteLine();
-                Console.Write("What kind of bill will you feed? ( 1, 2, 5, 10 ) OR Press ENTER to Finish; ");
+                Console.WriteLine("What kind of bill will you feed? ( 1, 2, 5, 10 ) OR Press ENTER to Finish: ");
+                Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
                 userInput = Console.ReadLine();
                 if (userInput == "")
                 {
@@ -185,15 +197,19 @@ namespace Capstone.Classes
                 if ((Int32.TryParse(userInput, out int number)) && (number == 1 || number == 2 || number == 5 || number == 10))
                 {
                     vendingMachine.FeedMoney(number);
-                    Console.WriteLine("Amount currently in vending machine: " + vendingMachine.Balance.ToString("C"));
+
+                    //Console.WriteLine("Amount currently in vending machine: " + vendingMachine.Balance.ToString("C"));
                     Console.WriteLine();
                     transactionLogger.RecordDeposit(number, vendingMachine.Balance);
+                    Freeze();
+
                 }
                 else
                 {
                     Console.WriteLine();
                     Console.WriteLine(validInputPrompt);
                     Console.WriteLine();
+
                 }
 
             }
@@ -202,6 +218,8 @@ namespace Capstone.Classes
 
         private void DisplayItems(VendingMachine vendingMachine)
         {
+            string userInput;
+            Console.Clear();
             Console.WriteLine();
             Console.WriteLine("Vending Machine Contents:");
             Console.WriteLine();
@@ -219,7 +237,23 @@ namespace Capstone.Classes
                     Console.WriteLine($"{vendingMachine.Slots[i]}:  OUT OF STOCK");
                 }
             }
-            Console.WriteLine();
+            Freeze();
+
+        }
+
+        private void Freeze()
+        {
+            string userInput;
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Press ENTER to Continue: ");
+                userInput = Console.ReadLine();
+                if (userInput == "")
+                {
+                    break;
+                }
+            }
         }
     }
 
