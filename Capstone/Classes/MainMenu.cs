@@ -243,17 +243,9 @@ namespace Capstone.Classes
 
         private void Freeze()
         {
-            string userInput;
-            while (true)
-            {
                 Console.WriteLine();
                 Console.WriteLine("Press ENTER to Continue: ");
-                userInput = Console.ReadLine();
-                if (userInput == "")
-                {
-                    break;
-                }
-            }
+                Console.ReadLine();          
         }
     }
 
