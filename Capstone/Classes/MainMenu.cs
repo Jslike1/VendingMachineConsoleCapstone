@@ -20,6 +20,7 @@ namespace Capstone.Classes
         {
             while (true)
             {
+                
                 Console.WriteLine("(1) Display Vending Machine Contents");
                 Console.WriteLine();
                 Console.WriteLine("(2) Purchase");
@@ -27,6 +28,7 @@ namespace Capstone.Classes
                 string userInput = Console.ReadLine();
                 if (Int32.TryParse(userInput, out int number))
                 {
+                    
                     if (number == 1)
                     {
 
