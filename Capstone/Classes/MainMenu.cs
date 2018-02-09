@@ -36,13 +36,12 @@ namespace Capstone.Classes
                     {
 
                         DisplayItems(vendingMachine);
-                        userInput = "";
+                        Freeze();
 
                     }
                     else if (number == 2)
                     {
                         PurchaseItem(vendingMachine);
-                        userInput = "";
                     }
                     else if (number == 3)
                     {
@@ -85,20 +84,16 @@ namespace Capstone.Classes
                     if (number == 1)
                     {
                         TakeBill();
-                        userInput = "";
                     }
 
                     if (number == 2)
                     {
-                        DisplayItems(vendingMachine);
+                        //DisplayItems(vendingMachine);
                         SelectProduct();
-                        userInput = "";
                     }
                     if (number == 3)
                     {
                         FinishTransaction();
-                        userInput = "";
-
                         break;
                     }
                 }
@@ -107,7 +102,6 @@ namespace Capstone.Classes
 
         private void FinishTransaction()
         {
-            Console.Clear();
             string userInput;
             Console.WriteLine();
             Change change = vendingMachine.ReturnChange();
@@ -135,9 +129,12 @@ namespace Capstone.Classes
         {
             while (true)
             {
+                Console.Clear();
                 string userInput;
+                DisplayItems(vendingMachine);
                 Console.WriteLine();
-                Console.Write("Which product do you want to purchase? (Ex: A4, C3...) Or Press ENTER to Finish: ");
+                Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
+                Console.WriteLine("Which product do you want to purchase? (Ex: A4, C3...) Or Press ENTER to Finish: ");
                 userInput = Console.ReadLine().ToUpper();
                 if (userInput == "")
                 {
@@ -153,7 +150,7 @@ namespace Capstone.Classes
                         Console.WriteLine();
 
                         shoppingCart.Add(vendingMachine.Purchase(userInput));
-                        Console.WriteLine();
+
                         Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
                         Console.WriteLine();
                         Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
@@ -176,6 +173,8 @@ namespace Capstone.Classes
                     Console.WriteLine();
                     Console.WriteLine(validInputPrompt);
                 }
+                Freeze();
+
             }
         }
 
@@ -237,7 +236,6 @@ namespace Capstone.Classes
                     Console.WriteLine($"{vendingMachine.Slots[i]}:  OUT OF STOCK");
                 }
             }
-            Freeze();
 
         }
 
