@@ -53,6 +53,7 @@ namespace Capstone.Classes
 
         public VendingMachineItem Purchase(string slot)
         {
+            
             VendingMachineItem returnItem;
 
                 Balance -= Inventory[slot][0].Price;
@@ -65,9 +66,10 @@ namespace Capstone.Classes
 
         }
 
-        private Change ReturnChange()
+        public Change ReturnChange()
         {
             Change change = new Change(Balance);
+            Balance = 0;
             return change;
             
         }

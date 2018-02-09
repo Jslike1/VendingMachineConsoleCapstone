@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Capstone.Classes.Vending_Machine_Items;
 
 namespace Capstone.Classes
 {
@@ -11,6 +12,7 @@ namespace Capstone.Classes
 
         static VendingMachine vendingMachine = new VendingMachine();
         static TransactionLogger transactionLogger = new TransactionLogger("log.txt");
+        static List<VendingMachineItem> shoppingCart = new List<VendingMachineItem>();
 
         public void DisplayMenu()
         {
@@ -30,18 +32,20 @@ namespace Capstone.Classes
                     {
                         
                         DisplayItems(vendingMachine);
-                        
-                        
+                        userInput = "";
+
                     }
                     else if(number == 2)
                     {
                         PurchaseItem(vendingMachine);
+                        userInput = "";
                     }
                     else
                     {
                         Console.WriteLine();
                         Console.WriteLine("Please enter a valid input (1 or 2)");
                         Console.WriteLine();
+                        userInput = "";
                     }
 
                 }
@@ -68,23 +72,28 @@ namespace Capstone.Classes
                 Console.WriteLine();
                 Console.WriteLine("(3) Finish Transaction");
                 Console.WriteLine();
-                Console.WriteLine($"Current Money Provided: ${vendingMachine.Balance}");
+                Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
                 string userInput = Console.ReadLine();
                 if(Int32.TryParse(userInput, out int number))
                 {
                     if(number == 1)
                     {
                         TakeBill();
+                        userInput = "";
                     }
 
                     if(number == 2)
                     {
                         DisplayItems(vendingMachine);
                         SelectProduct();
+                        userInput = "";
                     }
-                    if(number == 3)
+                    if (number == 3)
                     {
                         FinishTransaction();
+                        userInput = "";
+
+                        break;
                     }
                 }
             }
@@ -93,7 +102,23 @@ namespace Capstone.Classes
 
         private void FinishTransaction()
         {
-            
+            Console.WriteLine();
+            Change change = vendingMachine.ReturnChange();
+            Console.WriteLine($"Your recieve {change.Quarters} quarters, {change.Dimes} dimes, and {change.Nickels} nickels. ");
+            Console.WriteLine();
+            Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
+            Console.WriteLine();
+            if(shoppingCart.Count != 0)
+            {
+                Console.WriteLine("Time to eat your snacks!");
+                foreach (VendingMachineItem snack in shoppingCart)
+                {
+                    Console.WriteLine(snack.Consume());
+                }
+
+            }
+
+
         }
 
 
@@ -107,7 +132,7 @@ namespace Capstone.Classes
                 userInput = Console.ReadLine();
                 if (userInput == "")
                 {
-                    PurchaseItem(vendingMachine);
+                    //PurchaseItem(vendingMachine);
                     break;
                 }
 
@@ -125,8 +150,7 @@ namespace Capstone.Classes
 
 
                                 Console.WriteLine();
-                                Console.WriteLine(vendingMachine.Inventory[userInput][0].Consume());
-                                vendingMachine.Purchase(userInput);
+                                shoppingCart.Add(vendingMachine.Purchase(userInput));
                                 Console.WriteLine();
                                 Console.WriteLine($"Amount currently in vending machine: ${ vendingMachine.Balance}");
                             }
@@ -169,7 +193,7 @@ namespace Capstone.Classes
                 userInput = Console.ReadLine();
                 if(userInput == "")
                 {
-                    PurchaseItem(vendingMachine);
+                    //PurchaseItem(vendingMachine);
                     break;
                 }
                 if ((Int32.TryParse(userInput, out int number)) && (number == 1 || number == 2 || number == 5 || number == 10))
