@@ -100,7 +100,7 @@ namespace Capstone.Classes
         {
             Console.WriteLine();
             Change change = vendingMachine.ReturnChange();
-            Console.WriteLine($"Your recieve {change.Quarters} quarters, {change.Dimes} dimes, and {change.Nickels} nickels. ");
+            Console.WriteLine($"You receive {change.Quarters} quarters, {change.Dimes} dimes, and {change.Nickels} nickels. ");
             Console.WriteLine();
             Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
             Console.WriteLine();
