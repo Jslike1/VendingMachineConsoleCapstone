@@ -59,7 +59,6 @@
     <Compile Include="Tests\ExceptionsTests.cs" />
     <Compile Include="Tests\ChangeTests.cs" />
     <Compile Include="Tests\FileReaderTests.cs" />
-    <Compile Include="Tests\Transacto.cs" />
     <Compile Include="Tests\VendingMachineTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,8 @@ namespace Capstone.Classes
 {
     class TransactionLogger
     {
-        string FilePath { get; set; }
+        private string FilePath { get; set; }
+        private string exceptionMessage = "Error writing log.txt; check to make sure file or folder is not read-only.";
 
         public TransactionLogger(string filePath)
         {
@@ -26,28 +27,32 @@ namespace Capstone.Classes
                     sr.WriteLine($"{DateTime.Now.ToString().PadRight(23)} {feedMoney.PadRight(22)}{amount.ToString("C").PadRight(10)}{finalBalance.ToString("C").PadRight(10)}");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine();
+                Console.WriteLine(exceptionMessage);
+                Freeze();
             }
         }
 
-        public void RecordPurchase(string slot, string product, decimal amount, decimal finalBalance)
+        public void RecordPurchase(string slot, string product, decimal amount, decimal balance)
         {
-
-            //Will include in the log attempts at purchasing items that threw an InsuffictientFundsException. The Balance will remain the same. Will display amount of money the customer came up short in parentheses.
-
-            try
+            if (balance >= amount)
             {
-                using (StreamWriter sr = new StreamWriter(FilePath, true))
+                try
                 {
-                    string itemNameAndSlot = $"{product} {slot}";
-                sr.WriteLine($"{DateTime.Now.ToString().PadRight(23)} {itemNameAndSlot.PadRight(22)}{finalBalance.ToString("C").PadRight(10)}{(finalBalance - amount).ToString("C").PadRight(10)}");
+                    using (StreamWriter sr = new StreamWriter(FilePath, true))
+                    {
+                        string itemNameAndSlot = $"{product} {slot}";
+                        sr.WriteLine($"{DateTime.Now.ToString().PadRight(23)} {itemNameAndSlot.PadRight(22)}{balance.ToString("C").PadRight(10)}{(balance - amount).ToString("C").PadRight(10)}");
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
+                catch (Exception)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(exceptionMessage);
+                    Freeze();
+                }
             }
         }
 
@@ -62,11 +67,20 @@ namespace Capstone.Classes
                     sr.WriteLine($"{DateTime.Now.ToString().PadRight(23)} {giveChange.PadRight(22)}{finalBalance.ToString("C").PadRight(10)}{zeros.PadRight(10)}");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine();
+                Console.WriteLine(exceptionMessage);
+                Freeze();
             }
         }
 
+
+        private void Freeze()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to Continue: ");
+            Console.ReadLine();
+        }
     }
 }
