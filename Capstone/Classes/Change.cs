@@ -14,7 +14,6 @@ namespace Capstone.Classes
 
         public int Quarters { get; }
 
-        public decimal Total { get; }
 
 
         public Change(decimal total)

@@ -27,20 +27,15 @@ namespace CapstoneTests.Tests
 
         }
 
-        [TestMethod]
-        public void InvokeVendingMachine()
-        {
-
-        }
 
         [TestMethod]
         public void BalanceEqualsMoneyFed()
         {
             vendingMachine.FeedMoney(100);
             Assert.AreEqual(100, vendingMachine.Balance);
+
             vendingMachine.FeedMoney(100);
             Assert.AreEqual(200, vendingMachine.Balance);
-
         }
 
         [TestMethod]
@@ -58,15 +53,12 @@ namespace CapstoneTests.Tests
             vendingMachine.Purchase(keys[0]);
             var amountRemoved = vendingMachine.Inventory[keys[0]][0].Price;
             Assert.AreEqual(100 - amountRemoved, vendingMachine.Balance);
-
         }
 
         [TestMethod]
         public void ReturnChangeReturnsChangeObject()
         {
-
             Assert.IsTrue(vendingMachine.ReturnChange() is Change);
-
         }
 
 

@@ -11,7 +11,7 @@ namespace Capstone.Classes
 
     public class VendingMachine
     {
-        public FileReader fileReader = new FileReader("vendingmachine.csv"); 
+        public FileReader fileReader = new FileReader("vendingmachine.csv");
 
         public Dictionary<string, List<VendingMachineItem>> Inventory { get; set; }
 
@@ -23,7 +23,7 @@ namespace Capstone.Classes
             {
                 string[] slots = new string[Inventory.Count];
                 int counter = 0;
-                foreach(string key in Inventory.Keys)
+                foreach (string key in Inventory.Keys)
                 {
                     slots[counter] = key;
                     counter++;
@@ -34,21 +34,33 @@ namespace Capstone.Classes
 
         }
 
+        public bool IsValidSlot(string slot)
+        {
+            return Inventory.ContainsKey(slot);
+        }
+
         public void FeedMoney(int dollars)
         {
             Balance += (decimal)dollars;
         }
 
-        public void CheckQuantityRemaining(string slot)
+        public bool CheckQuantityRemaining(string slot)
         {
-            if (!(Inventory[slot].Count > 0))
-            {
-                throw new OutOfStockException();
-            }
+            return Inventory[slot].Count > 0;
         }
 
         public VendingMachineItem Purchase(string slot)
         {
+            if (!Inventory.ContainsKey(slot))
+            {
+                throw new InvalidSlotException();
+            }
+
+            if (Inventory[slot].Count == 0)
+            {
+                throw new OutOfStockException();
+            }
+
             if (Balance < Inventory[slot][0].Price)
             {
                 throw new InsufficientFundsException();
@@ -56,33 +68,24 @@ namespace Capstone.Classes
 
             VendingMachineItem returnItem;
 
-                Balance -= Inventory[slot][0].Price;
-                returnItem = Inventory[slot][0];
-                Inventory[slot].RemoveAt(0);
+            Balance -= Inventory[slot][0].Price;
+            returnItem = Inventory[slot][0];
+            Inventory[slot].RemoveAt(0);
 
-                return returnItem;
-                
-           
-
+            return returnItem;
         }
 
         public Change ReturnChange()
         {
             Change change = new Change(Balance);
             Balance = 0;
+
             return change;
-            
         }
 
         public VendingMachine()
-        {
-            //Dictionary<string, List<VendingMachineItem>> startingInventory
-            //foreach(string key in startingInventory.Keys)
-            //{
-            //    Inventory[key] = startingInventory[key];
-            //}
+        {           
             this.Inventory = fileReader.GetInventory();
-
         }
 
     }

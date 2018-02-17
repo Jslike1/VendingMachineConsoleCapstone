@@ -31,17 +31,17 @@ namespace Capstone.Classes
                 string userInput = Console.ReadLine();
                 if (Int32.TryParse(userInput, out int number))
                 {
-                    
+
                     if (number == 1)
                     {
 
-                        DisplayItems(vendingMachine);
+                        DisplayItems();
                         Freeze();
 
                     }
                     else if (number == 2)
                     {
-                        PurchaseItem(vendingMachine);
+                        PurchaseItem();
                     }
                     else if (number == 3)
                     {
@@ -64,7 +64,7 @@ namespace Capstone.Classes
             }
         }
 
-        private void PurchaseItem(VendingMachine vendingMachine)
+        private void PurchaseItem()
         {
             while (true)
             {
@@ -111,7 +111,7 @@ namespace Capstone.Classes
                 foreach (VendingMachineItem snack in shoppingCart)
                 {
                     Console.WriteLine(snack.Consume());
-                    
+
                 }
                 shoppingCart = new List<VendingMachineItem>();
                 Console.WriteLine();
@@ -126,7 +126,7 @@ namespace Capstone.Classes
             {
                 Console.Clear();
                 string userInput;
-                DisplayItems(vendingMachine);
+                DisplayItems();
                 Console.WriteLine();
                 Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
                 Console.WriteLine("Which product do you want to purchase? (Ex: A4, C3...) Or Press ENTER to Finish: ");
@@ -135,26 +135,28 @@ namespace Capstone.Classes
                 {
                     break;
                 }
-                if (vendingMachine.Inventory.ContainsKey(userInput))
+                if (vendingMachine.IsValidSlot(userInput))
                 {
                     try
                     {
-                        vendingMachine.CheckQuantityRemaining(userInput);
-                        transactionLogger.RecordPurchase(userInput, vendingMachine.Inventory[userInput][0].ItemName, vendingMachine.Inventory[userInput][0].Price, vendingMachine.Balance);
+                        if (vendingMachine.CheckQuantityRemaining(userInput))
+                        {
+                            transactionLogger.RecordPurchase(userInput, vendingMachine.Inventory[userInput][0].ItemName, vendingMachine.Inventory[userInput][0].Price, vendingMachine.Balance);
 
-                        Console.WriteLine();
+                            Console.WriteLine();
 
-                        shoppingCart.Add(vendingMachine.Purchase(userInput));
+                            shoppingCart.Add(vendingMachine.Purchase(userInput));
 
-                        Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
-                        Console.WriteLine();
-                        Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
-                    }
-                    catch (OutOfStockException)
-                    {
-                        Console.WriteLine();
-                        Console.WriteLine("That item it out of stock...");
-                        Console.WriteLine();
+                            Console.WriteLine($"Dispensing {shoppingCart[shoppingCart.Count - 1].ItemName}");
+                            Console.WriteLine();
+                            Console.WriteLine($"{balanceMessage} {vendingMachine.Balance.ToString("C")}");
+                        }
+                        else
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("That item it out of stock...");
+                            Console.WriteLine();
+                        }
                     }
                     catch (InsufficientFundsException)
                     {
@@ -168,6 +170,7 @@ namespace Capstone.Classes
                     Console.WriteLine();
                     Console.WriteLine(validInputPrompt);
                 }
+
                 Freeze();
 
             }
@@ -204,16 +207,17 @@ namespace Capstone.Classes
             }
         }
 
-        private void DisplayItems(VendingMachine vendingMachine)
+        private void DisplayItems()
         {
             Console.Clear();
             Console.WriteLine();
             Console.WriteLine("Vending Machine Contents:");
             Console.WriteLine();
 
+
             for (int i = 0; i < vendingMachine.Slots.Length; i++)
             {
-                if (vendingMachine.Inventory[vendingMachine.Slots[i]].Count > 0)
+                if (vendingMachine.CheckQuantityRemaining(vendingMachine.Slots[i]))                
                 {
                     Console.WriteLine($"{vendingMachine.Slots[i]}:  " +
                         $"{vendingMachine.Inventory[vendingMachine.Slots[i]][0].ItemName.PadRight(20)}" +
@@ -228,9 +232,9 @@ namespace Capstone.Classes
 
         private void Freeze()
         {
-                Console.WriteLine();
-                Console.WriteLine("Press ENTER to Continue: ");
-                Console.ReadLine();          
+            Console.WriteLine();
+            Console.WriteLine("Press ENTER to Continue: ");
+            Console.ReadLine();
         }
     }
 

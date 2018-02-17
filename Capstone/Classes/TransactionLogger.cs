@@ -17,14 +17,14 @@ namespace Capstone.Classes
             FilePath = filePath;
         }
 
-        public void RecordDeposit(decimal amount, decimal finalBalance)
+        private void WriteToFile(string message)
         {
             try
             {
                 using (StreamWriter sr = new StreamWriter(FilePath, true))
                 {
-                    string feedMoney = "FEED MONEY:";
-                    sr.WriteLine($"{DateTime.Now.ToString().PadRight(23)} {feedMoney.PadRight(22)}{amount.ToString("C").PadRight(10)}{finalBalance.ToString("C").PadRight(10)}");
+
+                    sr.WriteLine(message);
                 }
             }
             catch (Exception)
@@ -33,46 +33,29 @@ namespace Capstone.Classes
                 Console.WriteLine(exceptionMessage);
                 Freeze();
             }
+        }
+
+
+        public void RecordDeposit(decimal amount, decimal finalBalance)
+        {
+            string feedMoney = "FEED MONEY:";
+            WriteToFile($"{DateTime.Now.ToString().PadRight(23)} {feedMoney.PadRight(22)}{amount.ToString("C").PadRight(10)}{finalBalance.ToString("C").PadRight(10)}");            
         }
 
         public void RecordPurchase(string slot, string product, decimal amount, decimal balance)
         {
             if (balance >= amount)
             {
-                try
-                {
-                    using (StreamWriter sr = new StreamWriter(FilePath, true))
-                    {
-                        string itemNameAndSlot = $"{product} {slot}";
-                        sr.WriteLine($"{DateTime.Now.ToString().PadRight(23)} {itemNameAndSlot.PadRight(22)}{balance.ToString("C").PadRight(10)}{(balance - amount).ToString("C").PadRight(10)}");
-                    }
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine(exceptionMessage);
-                    Freeze();
-                }
-            }
+                string itemNameAndSlot = $"{product} {slot}";
+                WriteToFile($"{DateTime.Now.ToString().PadRight(23)} {itemNameAndSlot.PadRight(22)}{balance.ToString("C").PadRight(10)}{(balance - amount).ToString("C").PadRight(10)}");
+            }          
         }
 
         public void RecordCompleteTransaction(decimal finalBalance)
         {
-            try
-            {
-                using (StreamWriter sr = new StreamWriter(FilePath, true))
-                {
-                    string giveChange = "GIVECHANGE";
-                    string zeros = "$0.00";
-                    sr.WriteLine($"{DateTime.Now.ToString().PadRight(23)} {giveChange.PadRight(22)}{finalBalance.ToString("C").PadRight(10)}{zeros.PadRight(10)}");
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine();
-                Console.WriteLine(exceptionMessage);
-                Freeze();
-            }
+            string giveChange = "GIVECHANGE";
+            string zeros = "$0.00";
+            WriteToFile($"{DateTime.Now.ToString().PadRight(23)} {giveChange.PadRight(22)}{finalBalance.ToString("C").PadRight(10)}{zeros.PadRight(10)}");           
         }
 
 
