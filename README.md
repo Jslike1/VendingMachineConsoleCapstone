@@ -3,6 +3,7 @@
 ##
 
 This project has a few features:
-* Dispnse vending Machine items
-    * includes chips, beverages, candy, and drinks
+* Stock and Display Vending Machine Contents
 * Feed Money
+* Dispense vending Machine items
+    * includes chips, beverages, candy, and drinks
